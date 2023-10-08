@@ -1,0 +1,1 @@
+User Registration API : localhost:1896/api/user/register

@@ -3,14 +3,16 @@ import dotenv from 'dotenv'
 import db from './config/dbConnect.js'
 import bodyParser from 'body-parser'
 import authRoute from './routes/authRoute.js'
+import cookieParser from 'cookie-parser'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
 
 let app = express()
 dotenv.config()
 let PORT = process.env.PORT || 3113
 
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
 
 app.use('/api/user', authRoute)
 app.use(notFound)

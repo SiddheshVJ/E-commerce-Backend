@@ -1,17 +1,17 @@
 import { generateToken } from "../config/jwtToken";
-import userModel from "../models/userModel";
-import expressAsyncHandler from "express-async-handler";
+import User from "../models/userModel";
+import asyncHandler from "express-async-handler";
 
 
 // Register User
-export const createUser = expressAsyncHandler(async (req, res) => {
+export const createUser = asyncHandler(async (req, res) => {
 
     const email = req.body.email;
-    const findUser = await userModel.findOne({ email });
+    const findUser = await User.findOne({ email });
 
     if (!findUser) {
         // create new user
-        const newUser = await userModel.create(req.body)
+        const newUser = await User.create(req.body)
         res.json(newUser)
     } else {
         throw new Error('User Already Exists')
@@ -20,10 +20,10 @@ export const createUser = expressAsyncHandler(async (req, res) => {
 
 
 // Login User
-export const loginUser = expressAsyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
     // check user exists or not
-    const findUser = await userModel.findOne({ email })
+    const findUser = await User.findOne({ email })
     const checkPass = await findUser.isPasswordMatched(password)
 
     if (findUser && checkPass) {
@@ -42,10 +42,9 @@ export const loginUser = expressAsyncHandler(async (req, res) => {
 
 
 // Get Users
-
-export const getAllUsers = expressAsyncHandler(async (req, res) => {
+export const getAllUsers = asyncHandler(async (req, res) => {
     try {
-        const getUsers = await userModel.find({})
+        const getUsers = await User.find({})
         res.status(200).json(getUsers)
     } catch (error) {
         throw new Error(error)
@@ -53,11 +52,10 @@ export const getAllUsers = expressAsyncHandler(async (req, res) => {
 })
 
 // Get Single User
-
-export const getUser = expressAsyncHandler(async (req, res) => {
+export const getUser = asyncHandler(async (req, res) => {
     const { id } = req.params
     try {
-        const getUser = await userModel.findById(id)
+        const getUser = await User.findById(id)
         res.status(200).json(getUser)
     } catch (error) {
         throw new Error(error)
@@ -66,12 +64,10 @@ export const getUser = expressAsyncHandler(async (req, res) => {
 })
 
 // Delete Single User
-
-
-export const deleteUser = expressAsyncHandler(async (req, res) => {
+export const deleteUser = asyncHandler(async (req, res) => {
     const { id } = req.params
     try {
-        const deleteUser = await userModel.findByIdAndDelete(id)
+        const deleteUser = await User.findByIdAndDelete(id)
         res.status(200).json({
             message: `${deleteUser.firstName} Your Account Deleted`
         })
@@ -82,10 +78,10 @@ export const deleteUser = expressAsyncHandler(async (req, res) => {
 })
 
 // Update User
-export const updateUser = expressAsyncHandler(async (req, res) => {
-    const { id } = req.params
+export const updateUser = asyncHandler(async (req, res) => {
+    const { _id } = req.user
     try {
-        const updateUser = await userModel.findByIdAndUpdate(id, {
+        const updateUser = await User.findByIdAndUpdate(_id, {
             firstName: req?.body.firstName,
             lastName: req?.body.lastName,
             mobile: req?.body.mobile,
@@ -102,4 +98,38 @@ export const updateUser = expressAsyncHandler(async (req, res) => {
         throw new Error(error)
     }
 
+})
+
+export const blockUser = asyncHandler(async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const user = await User.findByIdAndUpdate(id, {
+            isBlocked: true
+        }, {
+            new: true
+        })
+        res.json({
+            message: `user is blocked.`
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
+})
+
+export const unBlockUser = asyncHandler(async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const user = await User.findByIdAndUpdate(id, {
+            isBlocked: false
+        }, {
+            new: true
+        })
+        res.json({
+            message: `user Unblocked.`
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
 })

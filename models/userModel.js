@@ -1,8 +1,8 @@
-const mongoose = require('mongoose'); // Erase if already required
+import { Schema, model, ObjectId } from 'mongoose'; // Erase if already required
 import bcrypt from 'bcrypt'
 
 // Declare the Schema of the Mongo model
-var userSchema = new mongoose.Schema({
+var userSchema = new Schema({
     firstName: {
         type: String,
         required: true,
@@ -29,6 +29,18 @@ var userSchema = new mongoose.Schema({
         type: String,
         default: 'user',
     },
+    isBlocked: {
+        type: Boolean,
+        default: false
+    },
+    cart: {
+        type: Array,
+        default: []
+    },
+    address: [{ type: ObjectId, ref: "Address" }],
+    wishList: [{ type: ObjectId, ref: "Product" }]
+}, {
+    timestamps: true
 });
 
 userSchema.pre('save', async function (next) {
@@ -41,4 +53,4 @@ userSchema.methods.isPasswordMatched = async function (enteredPassword) {
 }
 
 //Export the model
-module.exports = mongoose.model('User', userSchema);
+module.exports = model('User', userSchema);

@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import db from './config/dbConnect.js'
 import bodyParser from 'body-parser'
 import authRoute from './routes/authRoute.js'
-import { errorHandler, notFound } from './middelwares/errorHandler.js'
+import { errorHandler, notFound } from './middleware/errorHandler.js'
 
 let app = express()
 dotenv.config()

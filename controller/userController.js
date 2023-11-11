@@ -20,7 +20,6 @@ export const createUser = asyncHandler(async (req, res) => {
     }
 })
 
-
 // Login User
 export const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
@@ -179,7 +178,7 @@ export const logOut = asyncHandler(async (req, res) => {
         })
         return res.sendStatus(204) // forbidden
     }
-    await User.findOneAndUpdate({refreshToken}, {
+    await User.findOneAndUpdate({ refreshToken }, {
         refreshToken: ""
     })
     res.clearCookie("refreshToken", {

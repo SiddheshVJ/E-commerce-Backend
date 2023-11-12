@@ -3,7 +3,6 @@ import { createUser, loginUser, getAllUsers, resetPassword, forgetPasswordToken,
 import { authMiddleware, isAdmin } from '../middleware/authMiddleware'
 const router = Router()
 
-
 router.post('/register', createUser)
 router.post('/login', loginUser)
 router.post('/forgot-password-token', forgetPasswordToken)
@@ -18,4 +17,4 @@ router.put('/block-user/:id', authMiddleware, isAdmin, blockUser)
 router.put('/un-block-user/:id', authMiddleware, isAdmin, unBlockUser)
 router.put('/update-password', authMiddleware, updatePassword)
 
-module.exports = router
+export default router

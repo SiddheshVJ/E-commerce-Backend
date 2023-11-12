@@ -6,6 +6,8 @@ import db from './config/dbConnect.js'
 import bodyParser from 'body-parser'
 import authRoute from './routes/authRoute.js'
 import productRoute from './routes/productRoute.js'
+import blogRoute from './routes/blogRoute.js'
+
 import cookieParser from 'cookie-parser'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
 
@@ -23,6 +25,7 @@ app.use(morgan('dev', { stream: fs.createWriteStream('./app.log') }))
 
 app.use('/api/user', authRoute)
 app.use('/api/product', productRoute)
+app.use('/api/blog', blogRoute)
 app.use(notFound)
 app.use(errorHandler)
 

@@ -1,8 +1,0 @@
-[0mGET /api/product?limit=3&page= [31m500[0m 30.045 ms - 971[0m
-[0mGET /api/product?limit=3&page=3 [32m200[0m 19.650 ms - 305[0m
-[0mGET /api/product?limit=3&page=4 [31m500[0m 3.092 ms - 887[0m
-[0mGET /api/product?limit=5&page=1 [32m200[0m 8.987 ms - 1592[0m
-[0mGET /api/product?limit=5&page=2 [32m200[0m 5.707 ms - 582[0m
-[0mGET /api/product?limit=5&page=3 [31m500[0m 4.227 ms - 887[0m
-[0mGET /api/product?page=3&limit=3 [32m200[0m 5.640 ms - 305[0m
-[0mGET /api/product?page=3&limit=2 [32m200[0m 5.296 ms - 590[0m

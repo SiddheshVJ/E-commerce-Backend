@@ -45,12 +45,16 @@ let productSchema = new Schema({
         type: String,
         required: true
     },
-    ratings: {
-        star: Number,
-    },
-    postedBy: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
+    ratings: [
+        {
+            star: Number,
+            comment: String,
+            postedBy: { type: Schema.Types.ObjectId, ref: "User" }
+        }
+    ],
+    totalRatings: {
+        type: String,
+        default: 0
     }
 },
     { timestamps: true })

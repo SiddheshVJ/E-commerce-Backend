@@ -21,7 +21,6 @@ export const updateBlog = asyncHandler(async (req, res) => {
     const { id } = req.params
     validateMongoDbId(id)
     try {
-
         let updateBlog = await Blog.findByIdAndUpdate(id, req.body, { new: true })
         res.status(200).json(updateBlog)
     } catch (err) {
@@ -32,14 +31,19 @@ export const updateBlog = asyncHandler(async (req, res) => {
 // Get BLog by id and update view by one
 export const getBlog = asyncHandler(async (req, res) => {
     const { id } = req.params
+    validateMongoDbId(id)
     try {
-        let blog = await Blog.findById(id)
-        await Blog.findByIdAndUpdate(id, {
-            $inc: { numViews: 1 }
-        }, {
-            new: true
-        })
-        res.status(200).json(blog)
+        let getBlog = await Blog.findById(id).populate('disLikes')
+        const updateViews = await Blog.findByIdAndUpdate(
+            id,
+            {
+                $inc: { numViews: 1 }
+            },
+            {
+                new: true
+            }
+        )
+        res.status(200).json(getBlog)
     } catch (err) {
         throw new Error(err)
     }

@@ -9,6 +9,4 @@ router.delete('/deleteblogcategory/:id', authMiddleware, isAdmin, deleteBlogCate
 router.get('/getblogcategory/:id', getBlogCategory)
 router.get('/getallblogcategory', getAllBlogCategory)
 
-
-
 export default router

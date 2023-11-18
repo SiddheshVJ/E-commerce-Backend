@@ -10,6 +10,7 @@ import productRoute from './routes/productRoute.js'
 import blogRoute from './routes/blogRoute.js'
 import prodCategoryRoute from './routes/prodCategoryRoute.js'
 import blogCategoryRoute from './routes/blogCategoryRoute.js'
+import brandRoute from './routes/brandRoute.js'
 
 import cookieParser from 'cookie-parser'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -32,6 +33,7 @@ app.use('/api/product', productRoute)
 app.use('/api/blog', blogRoute)
 app.use('/api/category', prodCategoryRoute)
 app.use('/api/blog-category', blogCategoryRoute)
+app.use('/api/brand', brandRoute)
 app.use(notFound)
 app.use(errorHandler)
 

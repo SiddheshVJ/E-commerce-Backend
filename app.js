@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
+import cors from 'cors'
 import fs from 'fs'
 import db from './config/dbConnect.js'
 import bodyParser from 'body-parser'
@@ -15,6 +16,7 @@ let app = express()
 dotenv.config()
 let PORT = process.env.PORT || 3113
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())

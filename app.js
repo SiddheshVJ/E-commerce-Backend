@@ -9,6 +9,7 @@ import authRoute from './routes/authRoute.js'
 import productRoute from './routes/productRoute.js'
 import blogRoute from './routes/blogRoute.js'
 import prodCategoryRoute from './routes/prodCategoryRoute.js'
+import blogCategoryRoute from './routes/blogCategoryRoute.js'
 
 import cookieParser from 'cookie-parser'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -30,6 +31,7 @@ app.use('/api/user', authRoute)
 app.use('/api/product', productRoute)
 app.use('/api/blog', blogRoute)
 app.use('/api/category', prodCategoryRoute)
+app.use('/api/blog-category', blogCategoryRoute)
 app.use(notFound)
 app.use(errorHandler)
 

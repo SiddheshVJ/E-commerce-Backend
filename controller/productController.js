@@ -2,6 +2,8 @@ import Product from '../models/productModel'
 import asyncHandler from "express-async-handler";
 import User from '../models/userModel'
 import slugify from 'slugify';
+import { validateMongoDbId } from '../utils/validateMongoDbId'
+import { cloudinaryUploadImg } from '../utils/cloudinary'
 
 export const createProduct = asyncHandler(async (req, res) => {
 
@@ -22,6 +24,7 @@ export const getProduct = asyncHandler(async (req, res) => {
     try {
 
         const { id } = req.params
+        validateMongoDbId(id)
         const product = await Product.findById(id)
         res.status(200).json({
             product
@@ -82,6 +85,7 @@ export const getAllProduct = asyncHandler(async (req, res) => {
 
 export const updateProduct = asyncHandler(async (req, res) => {
     const { id } = req.params
+    validateMongoDbId(id)
     try {
         if (req.body.title) {
             req.body.slug = slugify(req.body.title)
@@ -97,6 +101,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
 
 export const deleteProduct = asyncHandler(async (req, res) => {
     const { id } = req.params
+    validateMongoDbId(id)
     try {
         if (req.body.title) {
             req.body.slug = slugify(req.body.title)
@@ -210,4 +215,28 @@ export const rating = asyncHandler(async (req, res) => {
     }
 
 
+})
+
+export const uploadImages = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    validateMongoDbId(id)
+    console.log(req.files)
+
+    try {
+        const uploader = (path) => cloudinaryUploadImg(path, "images")
+        const urls = []
+        const files = req.files
+
+        for (const file of files) {
+            const { path } = file
+            const newPath = uploader(path)
+            urls.push(newPath)
+        }
+
+        const findProduct = await Product.findByIdAndUpdate(id, { images: urls.map(file => { return file }) }, { new: true })
+
+        res.json(findProduct)
+    } catch (err) {
+        throw new Error(err)
+    }
 })

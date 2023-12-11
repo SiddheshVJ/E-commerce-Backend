@@ -34,7 +34,12 @@ let productSchema = new Schema({
         default: 0,
         select: false
     },
-    images: [],
+    images: [
+        {
+            public_id: String,
+            url: String,
+        },
+    ],
     color: {
         type: String,
         required: true

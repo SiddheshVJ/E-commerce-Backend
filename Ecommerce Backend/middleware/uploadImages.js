@@ -2,23 +2,25 @@ import multer from "multer";
 import { upload } from 'multer'
 import sharp from "sharp";
 import path from "path";
-import fs from 'fs'
 
-const storage = multer.diskStorage({
+const multerStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, "./public/images/"));
+        cb(null, path.join(__dirname, '../public/images'));
     },
     filename: function (req, file, cb) {
-        const uniquesuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-        cb(null, file.fieldname + "-" + uniquesuffix + ".jpeg");
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.jpeg');
     },
 });
 
 const multerFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith("image")) {
-        cb(null, true);
+    if (file.mimetype.startsWith('image')) {
+        cb(null, true)
     } else {
-        cb({ message: "Unsupported file format" }, false);
+        cb({
+            message: 'Unsupported File Format'
+        },
+            false)
     }
 };
 
@@ -28,10 +30,9 @@ export const productImgResize = async (req, res, next) => {
         req.files.map(async (file) => {
             await sharp(file.path)
                 .resize(300, 300)
-                .toFormat("jpeg")
+                .toFormat('jpeg')
                 .jpeg({ quality: 90 })
                 .toFile(`public/images/products/${file.filename}`);
-            // fs.unlinkSync(`public/images/products/${file.filename}`);
         })
     );
     next();
@@ -47,14 +48,13 @@ export const blogImgResize = async (req, res, next) => {
                 .toFormat("jpeg")
                 .jpeg({ quality: 90 })
                 .toFile(`public/images/blogs/${file.filename}`);
-            // fs.unlinkSync(`public/images/blogs/${file.filename}`);
         })
     );
     next();
 };
 
 export const uploadPhoto = multer({
-    storage: storage,
+    storage: multerStorage,
     fileFilter: multerFilter,
-    limits: { fileSize: 1000000 }
+    limits: { fileSize: 2000000 }
 })

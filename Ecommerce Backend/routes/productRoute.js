@@ -5,7 +5,7 @@ import { productImgResize, uploadPhoto } from '../middleware/uploadImages'
 const router = express.Router()
 
 router.post('/', authMiddleware, isAdmin, createProduct)
-router.post('/upload-images/:id',
+router.put('/upload-images/:id',
     authMiddleware,
     isAdmin,
     uploadPhoto.array('images', 10),

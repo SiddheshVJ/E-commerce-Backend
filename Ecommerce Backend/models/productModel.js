@@ -15,7 +15,6 @@ let productSchema = new Schema({
     description: {
         type: String,
         required: true,
-        unique: true,
     },
     price: {
         type: Number,
@@ -32,14 +31,9 @@ let productSchema = new Schema({
     sold: {
         type: Number,
         default: 0,
-        select: false
+        // select: false
     },
-    images: [
-        {
-            public_id: String,
-            url: String,
-        },
-    ],
+    images: [],
     color: {
         type: String,
         required: true
@@ -60,6 +54,7 @@ let productSchema = new Schema({
         default: 0
     }
 },
-    { timestamps: true })
+    { timestamps: true }
+)
 
 module.exports = model('Product', productSchema)

@@ -4,6 +4,7 @@ import User from '../models/userModel'
 import slugify from 'slugify';
 import { validateMongoDbId } from '../utils/validateMongoDbId'
 import { cloudinaryUploadImg } from '../utils/cloudinary'
+import fs from 'fs'
 
 export const createProduct = asyncHandler(async (req, res) => {
 
@@ -229,6 +230,7 @@ export const uploadImages = asyncHandler(async (req, res) => {
             const { path } = file
             const newPath = await uploader(path)
             urls.push(newPath)
+            fs.unlinkSync(path)
         }
         const findProduct = await Product.findByIdAndUpdate(id, { images: urls.map(file => { return file }) }, { new: true })
         res.json(findProduct)

@@ -1,8 +1,8 @@
 import Blog from '../models/blogModel'
-import User from '../models/userModel'
 import asyncHandler from 'express-async-handler'
 import { validateMongoDbId } from '../utils/validateMongoDbId'
-
+import { cloudinaryUploadImg } from '../utils/cloudinary'
+import fs from 'fs'
 
 
 // Blog creation
@@ -169,3 +169,25 @@ export const disLikeBlog = asyncHandler(async (req, res) => {
     }
 });
 
+
+// Blog Images Upload 
+export const uploadBlogImages = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    validateMongoDbId(id)
+    try {
+        const uploader = (path) => cloudinaryUploadImg(path, "images")
+        const urls = []
+        const files = req.files
+
+        for (const file of files) {
+            const { path } = file
+            const newPath = await uploader(path)
+            urls.push(newPath)
+            fs.unlinkSync(path)
+        }
+        const findBlog = await Blog.findByIdAndUpdate(id, { images: urls.map(file => { return file }) }, { new: true })
+        res.json(findBlog)
+    } catch (err) {
+        throw new Error(err)
+    }
+})

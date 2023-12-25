@@ -28,6 +28,7 @@ var blogSchema = new Schema({
         type: Boolean,
         default: false
     },
+    images: [],
     likes: [
         {
             type: ObjectId,

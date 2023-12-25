@@ -7,15 +7,18 @@ var userSchema = new Schema({
     firstName: {
         type: String,
         required: true,
+        lowercase: true
     },
     lastName: {
         type: String,
         required: true,
+        lowercase: true
     },
     email: {
         type: String,
         required: true,
         unique: true,
+        lowercase: true
     },
     mobile: {
         type: String,
@@ -38,7 +41,7 @@ var userSchema = new Schema({
         type: Array,
         default: []
     },
-    address: [{ type: ObjectId, ref: "Address" }],
+    address: { type: String },
     wishList: [{ type: ObjectId, ref: "Product" }],
     refreshToken: {
         type: String

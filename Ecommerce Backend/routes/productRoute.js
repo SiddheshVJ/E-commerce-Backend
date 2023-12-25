@@ -13,6 +13,8 @@ router.put('/upload-images/:id',
     uploadImages
 )
 router.get('/:id', getProduct)
+
+
 router.post('/update-product/:id', authMiddleware, isAdmin, updateProduct)
 router.delete('/delete-product/:id', authMiddleware, isAdmin, deleteProduct)
 router.get('/', getAllProduct)

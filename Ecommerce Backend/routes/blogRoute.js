@@ -15,7 +15,7 @@ router.put('/upload-image/:id',
     uploadBlogImages)
 router.get('/get-blog/:id', getBlog)
 router.get('/all-blogs', getAllBlogs)
-router.delete('/delete-blogs/:id', authMiddleware, isAdmin, deleteBlog)
+router.delete('/delete-blog/:id', authMiddleware, isAdmin, deleteBlog)
 router.put('/likes', authMiddleware, likeBlog)
 router.put('/dislikes', authMiddleware, disLikeBlog)
 

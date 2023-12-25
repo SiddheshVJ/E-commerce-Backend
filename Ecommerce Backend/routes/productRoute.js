@@ -13,8 +13,8 @@ router.put('/upload-images/:id',
     uploadImages
 )
 router.get('/:id', getProduct)
-router.post('/:id', authMiddleware, isAdmin, updateProduct)
-router.delete('/:id', authMiddleware, isAdmin, deleteProduct)
+router.post('/update-product/:id', authMiddleware, isAdmin, updateProduct)
+router.delete('/delete-product/:id', authMiddleware, isAdmin, deleteProduct)
 router.get('/', getAllProduct)
 router.put('/addtowishlist', authMiddleware, addToWishlist)
 router.put('/rating', authMiddleware, rating)

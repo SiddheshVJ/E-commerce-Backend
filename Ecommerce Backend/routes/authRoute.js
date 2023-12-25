@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { createUser, loginUser, getAllUsers, resetPassword, forgetPasswordToken, getUser, deleteUser, updatePassword, handleRefreshedToken, updateUser, blockUser, unBlockUser, logOut } from "../controller/userController";
+import { createUser, loginUser, getAllUsers, resetPassword, forgetPasswordToken, getUser, deleteUser, updatePassword, handleRefreshedToken, updateUser, blockUser, unBlockUser, logOut, adminLogin } from "../controller/userController";
 import { authMiddleware, isAdmin } from '../middleware/authMiddleware'
 const router = Router()
 
 router.post('/register', createUser)
 router.post('/login', loginUser)
+router.post('/admin-login', adminLogin)
 router.post('/forgot-password-token', forgetPasswordToken)
 router.post('/reset-password/:token', resetPassword)
 router.get('/allusers', getAllUsers)

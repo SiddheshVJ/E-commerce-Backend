@@ -116,16 +116,16 @@ export const updateUser = asyncHandler(async (req, res) => {
 
 //block user
 export const blockUser = asyncHandler(async (req, res) => {
-    const { _id } = req.params
-    validateMongoDbId(_id)
+    const { id } = req.params
+    validateMongoDbId(id)
     try {
-        const user = await User.findByIdAndUpdate(_id, {
+        const user = await User.findByIdAndUpdate(id, {
             isBlocked: true
         }, {
             new: true
         })
         res.json({
-            message: `user is blocked.`
+            message: `user ${user.firstName} is blocked.`
         })
     } catch (error) {
         throw new Error(error)
@@ -133,16 +133,16 @@ export const blockUser = asyncHandler(async (req, res) => {
 })
 //Un block user
 export const unBlockUser = asyncHandler(async (req, res) => {
-    const { _id } = req.params
-    validateMongoDbId(_id)
+    const { id } = req.params
+    validateMongoDbId(id)
     try {
-        const user = await User.findByIdAndUpdate(_id, {
+        const user = await User.findByIdAndUpdate(id, {
             isBlocked: false
         }, {
             new: true
         })
         res.json({
-            message: `user Unblocked.`
+            message: `user ${user.firstName} Unblocked.`
         })
     } catch (error) {
         throw new Error(error)
@@ -247,4 +247,37 @@ export const resetPassword = asyncHandler(async (req, res) => {
     user.passwordResetExpires = undefined
     await user.save()
     res.json(user)
+})
+
+
+// Admin login
+
+export const adminLogin = asyncHandler(async (req, res) => {
+    const { email, password } = req.body
+
+    // check user exists or not
+    const findAdmin = await User.findOne({ email })
+    if (findAdmin.role !== 'Admin') throw new Error('Not Auhtorised')
+    const checkPass = await findAdmin.isPasswordMatched(password)
+
+    if (findAdmin && checkPass) {
+        const refreshToken = await generateRefreshToken(findAdmin?._id)
+        const updateUser = await User.findByIdAndUpdate(findAdmin?._id, {
+            refreshToken: refreshToken
+        }, { new: true })
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            maxAge: 22 * 60 * 60 * 1000,
+        })
+        res.status(200).json({
+            _id: findAdmin?._id,
+            firstName: findAdmin?.firstName,
+            lastName: findAdmin?.lastName,
+            email: findAdmin?.email,
+            mobile: findAdmin?.mobile,
+            token: generateToken(findAdmin?._id),
+        })
+    } else {
+        throw new Error('Invalid Credentials')
+    }
 })

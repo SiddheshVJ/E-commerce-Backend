@@ -1,6 +1,0 @@
-[0mPUT /api/product/upload-images/655a05b59473663704a16d95 [32m200[0m 5756.856 ms - 520[0m
-[0mPUT /api/product/upload-images/655a058a9473663704a16d91 [32m200[0m 4293.710 ms - 505[0m
-[0mGET /api/product [32m200[0m 6.294 ms - 1024[0m
-[0mGET /api/product?brand=Redgear [32m200[0m 5.325 ms - 14[0m
-[0mGET /api/product?color=Blue [32m200[0m 3.172 ms - 14[0m
-[0mGET /api/product [32m200[0m 4.073 ms - 1024[0m

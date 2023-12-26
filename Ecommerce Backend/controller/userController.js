@@ -286,7 +286,6 @@ export const adminLogin = asyncHandler(async (req, res) => {
     }
 })
 
-
 // Wishlist
 export const getWishlist = asyncHandler(async (req, res) => {
     const { _id } = req.user

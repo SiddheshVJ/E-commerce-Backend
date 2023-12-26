@@ -401,20 +401,19 @@ export const applyCoupon = asyncHandler(async (req, res) => {
     res.json(totalAfterDiscount)
 })
 
-export const createOrder = asyncHandler(async (req, res) => {
+export const createCashOrder = asyncHandler(async (req, res) => {
     const { COD, couponApplied } = req.body
-    // const { _id } = req.user
-    console.log(req.user)
+    const { _id } = req.user
     validateMongoDbId(_id)
     try {
         if (!COD) throw new Error("Create Cash Order Failed")
-        const user = await User.findById()
+        const user = await User.findById(_id)
         let userCart = await Cart.findOne({ orderBy: user._id })
         let finalAmount = 0
         if (couponApplied && userCart.totalAfterDiscount) {
-            finalAmount = userCart.totalAfterDiscount * 100
+            finalAmount = userCart.totalAfterDiscount
         } else {
-            finalAmount = userCart.cartTotal * 100
+            finalAmount = userCart.cartTotal
         }
 
         let newOrder = await new Order({
@@ -445,6 +444,38 @@ export const createOrder = asyncHandler(async (req, res) => {
         res.json({
             message: "success"
         })
+    } catch (err) {
+        throw new Error(err)
+    }
+})
+
+export const getOrders = asyncHandler(async (req, res) => {
+    const { _id } = req.user
+    validateMongoDbId(_id)
+    try {
+        const userOrders = await Order.findOne({ orderBy: _id }).populate('products.product').exec()
+        res.json(userOrders)
+    } catch (err) {
+        throw new Error(err)
+    }
+})
+
+
+export const updateOrderStatus = asyncHandler(async (req, res) => {
+    const { status } = req.body
+    const { id } = req.params
+    validateMongoDbId(id)
+    try {
+        const updateOrderStatus = await Order.findByIdAndUpdate(id, {
+            orderStatus: status,
+            paymentIntent: {
+                status: status
+            }
+        },
+            {
+                new: true
+            })
+        res.json(updateOrderStatus)
     } catch (err) {
         throw new Error(err)
     }
